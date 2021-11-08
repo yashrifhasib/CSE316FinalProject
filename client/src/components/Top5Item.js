@@ -66,6 +66,7 @@ function Top5Item(props) {
         if (event.code === "Enter") {
             let index = event.target.id.substring("item-".length);
             toggleEdit();
+            handleUpdateText(event)
         }
     }
 
@@ -94,7 +95,6 @@ function Top5Item(props) {
                 autoComplete="Top 5 List Item Name"
                 className='list-card'
                 onKeyPress={handleKeyPress}
-                onChange={handleUpdateText}
                 defaultValue={props.text}
                 inputProps={{style: {fontSize: 48}}}
                 InputLabelProps={{style: {fontSize: 24}}}
