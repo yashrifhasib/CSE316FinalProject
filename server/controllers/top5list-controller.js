@@ -107,7 +107,7 @@ getTop5ListById = async (req, res) => {
 }
 getTop5Lists = async (req, res) => {
     let userData = await User.findById({_id: req.userId});
-    await Top5List.find({/*ownerEmail: userData.email*/}, (err, top5Lists) => {
+    await Top5List.find({ownerEmail: userData.email}, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
