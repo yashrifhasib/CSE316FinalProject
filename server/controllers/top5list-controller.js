@@ -52,10 +52,11 @@ updateTop5List = async (req, res) => {
                 message: 'Top 5 List not found!',
             })
         }
-
-        top5List.name = body.name
-        top5List.items = body.items
-        top5List
+        
+        if (userData.email === top5List.ownerEmail) {
+            top5List.name = body.name;
+            top5List.items = body.items;
+            top5List
             .save()
             .then(() => {
                 console.log("SUCCESS!!!");
@@ -72,6 +73,9 @@ updateTop5List = async (req, res) => {
                     message: 'Top 5 List not updated!',
                 })
             })
+        }
+
+        
     })
 }
 
@@ -102,8 +106,8 @@ getTop5ListById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getTop5Lists = async (req, res) => {
-
-    await Top5List.find({}, (err, top5Lists) => {
+    let userData = await User.findById({_id: req.userId});
+    await Top5List.find({/*ownerEmail: userData.email*/}, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }

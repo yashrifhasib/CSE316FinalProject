@@ -114,7 +114,7 @@ function AuthContextProvider(props) {
                 user: null
             }
         });
-        history.push("/login");
+        history.push("/");
         //}
     }
 
