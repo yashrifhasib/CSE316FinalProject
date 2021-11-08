@@ -40,7 +40,7 @@ function ListCard(props) {
         setEditActive(newActive);
     }
 
-    async function handleDeleteList(event, id) {
+    function handleDeleteList(event, id) {
         event.stopPropagation();
         store.markListForDeletion(id);
     }
@@ -52,6 +52,7 @@ function ListCard(props) {
             toggleEdit();
         }
     }
+    
     function handleUpdateText(event) {
         setText(event.target.value);
     }

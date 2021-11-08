@@ -334,6 +334,7 @@ function GlobalStoreContextProvider(props) {
     store.updateItem = function (index, newItem) {
         store.currentList.items[index] = newItem;
         store.updateCurrentList();
+        
     }
 
     store.updateCurrentList = async function () {
