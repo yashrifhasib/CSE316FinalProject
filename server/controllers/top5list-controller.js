@@ -77,22 +77,24 @@ updateTop5List = async (req, res) => {
 
 deleteTop5List = async (req, res) => {
     let userData = await User.findById({_id: req.userId});
-    Top5List.findById({ ownerEmail: userData.email }, (err, top5List) => {
+    Top5List.findById({ _id: req.params.id }, (err, top5List) => {
         if (err) {
             return res.status(404).json({
                 err,
                 message: 'Top 5 List not found!',
             })
         }
-        Top5List.findOneAndDelete({ _id: req.params.id }, () => {
-            return res.status(200).json({ success: true, data: top5List })
-        }).catch(err => console.log(err))
+        if (top5List.ownerEmail === userData.email) {
+            Top5List.findOneAndDelete({ _id: req.params.id }, () => {
+                return res.status(200).json({ success: true, data: top5List })
+            }).catch(err => console.log(err));
+        }
     })
 }
 
 getTop5ListById = async (req, res) => {
-    let userData = await User.findById({_id: req.userId});
-    await Top5List.findById({ ownerEmail: userData.email }, (err, list) => {
+    //let userData = await User.findById({_id: req.userId});
+    await Top5List.findById({ _id: req.params.id }, (err, list) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }

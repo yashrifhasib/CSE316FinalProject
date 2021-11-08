@@ -64,12 +64,13 @@ function Top5Item(props) {
 
     function handleKeyPress(event) {
         if (event.code === "Enter") {
-            let index = event.target.id.substring("list-".length);
+            let index = event.target.id.substring("item-".length);
             toggleEdit();
         }
     }
 
     function handleUpdateText(event) {
+        setText(event.target.value);
         store.addUpdateItemTransaction(index, event.target.value);
     }
 
