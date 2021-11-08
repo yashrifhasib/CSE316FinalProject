@@ -49,7 +49,7 @@ function Top5Item(props) {
         store.addMoveItemTransaction(sourceId, targetId);
     }
 
-    function toggleEdit() {
+    
         let newActive = !editActive;
         if (newActive) {
             store.setIsItemEditActive();
