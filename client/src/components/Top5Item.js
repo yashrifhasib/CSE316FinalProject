@@ -49,7 +49,7 @@ function Top5Item(props) {
         store.addMoveItemTransaction(sourceId, targetId);
     }
 
-    
+    function toggleEdit() {
         let newActive = !editActive;
         if (newActive) {
             store.setIsItemEditActive();
@@ -65,13 +65,12 @@ function Top5Item(props) {
     function handleKeyPress(event) {
         if (event.code === "Enter") {
             let index = event.target.id.substring("list-".length);
-            //store.updateItem(index, );
             toggleEdit();
         }
     }
 
     function handleUpdateText(event) {
-        setText(event.target.value);
+        store.addUpdateItemTransaction(index, event.target.value);
     }
 
     let { index } = props;

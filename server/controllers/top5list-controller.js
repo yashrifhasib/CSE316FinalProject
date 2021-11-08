@@ -1,5 +1,5 @@
 const Top5List = require('../models/top5list-model');
-const User = require('../models/user-model');
+const User = require('../models/user-model')
 
 createTop5List = (req, res) => {
     const body = req.body;
@@ -34,6 +34,7 @@ createTop5List = (req, res) => {
 }
 
 updateTop5List = async (req, res) => {
+    let userData = await User.findById({_id: req.userId});
     const body = req.body
     console.log("updateTop5List: " + JSON.stringify(body));
     if (!body) {
@@ -75,7 +76,8 @@ updateTop5List = async (req, res) => {
 }
 
 deleteTop5List = async (req, res) => {
-    Top5List.findById({ _id: req.params.id }, (err, top5List) => {
+    let userData = await User.findById({_id: req.userId});
+    Top5List.findById({ ownerEmail: userData.email }, (err, top5List) => {
         if (err) {
             return res.status(404).json({
                 err,
@@ -89,7 +91,8 @@ deleteTop5List = async (req, res) => {
 }
 
 getTop5ListById = async (req, res) => {
-    await Top5List.findById({ _id: req.params.id }, (err, list) => {
+    let userData = await User.findById({_id: req.userId});
+    await Top5List.findById({ ownerEmail: userData.email }, (err, list) => {
         if (err) {
             return res.status(400).json({ success: false, error: err });
         }
@@ -97,6 +100,7 @@ getTop5ListById = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getTop5Lists = async (req, res) => {
+
     await Top5List.find({}, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
@@ -110,8 +114,9 @@ getTop5Lists = async (req, res) => {
     }).catch(err => console.log(err))
 }
 getTop5ListPairs = async (req, res) => {
-    const userData = await User.findOne({ _id: req.userId });
-    await Top5List.find({ownerEmail:userData.email}, (err, top5Lists) => {
+
+    let userData = await User.findById({_id: req.userId});
+    await Top5List.find({ ownerEmail: userData.email }, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -123,7 +128,6 @@ getTop5ListPairs = async (req, res) => {
         }
         else {
             // PUT ALL THE LISTS INTO ID, NAME PAIRS
-            
             let pairs = [];
             for (let key in top5Lists) {
                 let list = top5Lists[key];

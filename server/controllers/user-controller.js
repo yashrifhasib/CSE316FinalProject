@@ -54,7 +54,7 @@ loginUser = async (req, res) => {
 
 
 
-/*logoutUser = async (req, res) => {
+logoutUser = async (req, res) => {
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -90,7 +90,7 @@ loginUser = async (req, res) => {
         console.error(err);
         res.status(500).send();
     }
-}*/
+}
 
 
 registerUser = async (req, res) => {
