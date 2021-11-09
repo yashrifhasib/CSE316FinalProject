@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { useContext } from 'react';
-import AuthContext from '../auth';
+import { React, useContext } from "react";
+import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -20,30 +19,28 @@ const style = {
   p: 4,
 };
 
-export default function BasicModal() {
-  const { auth } = useContext(AuthContext);
-  
-  function handleClose() {
-    auth.clearError();
-  }
-
+export default function DeleteModal() {
+    const { store } = useContext(GlobalStoreContext);
 
   return (
     <div>
       <Modal
-        open={(auth.error != null)}
+        open={(store.listMarkedForDeletion != null)}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 <Alert severity="warning">
-                    <AlertTitle>Warning</AlertTitle>
-                    {auth.error}
+                    <AlertTitle>Info</AlertTitle>
+                    Delete this Top 5 List
+                    <br/>
+                    <Button onClick={store.deleteMarkedList} variant="contained">Yes</Button>
+                    <Button onClick={store.unmarkListForDeletion} variant="contained">No</Button>
                 </Alert>
           </Typography>
           
-          <Button onClick={handleClose} variant="contained">Close</Button>
+         
         </Box>
       </Modal>
     </div>
