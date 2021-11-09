@@ -21,6 +21,10 @@ const style = {
 
 export default function DeleteModal() {
     const { store } = useContext(GlobalStoreContext);
+    let name = "";
+    if (store.listMarkedForDeletion != null) {
+        name = store.listMarkedForDeletion.name;
+    }
 
   return (
     <div>
@@ -33,7 +37,7 @@ export default function DeleteModal() {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                 <Alert severity="warning">
                     <AlertTitle>Info</AlertTitle>
-                    Delete this Top 5 List
+                    Delete {name} Top 5 List
                     <br/>
                     <Button onClick={store.deleteMarkedList} variant="contained">Yes</Button>
                     <Button onClick={store.unmarkListForDeletion} variant="contained">No</Button>
