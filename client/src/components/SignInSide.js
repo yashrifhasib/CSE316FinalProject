@@ -1,6 +1,6 @@
 import { useContext } from 'react';
-import AuthContext from '../auth'
-import Copyright from './Copyright'
+import AuthContext from '../auth';
+import Copyright from './Copyright';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { GlobalStoreContext } from '../store'
+import BasicModal from './BasicModal'
 
 const theme = createTheme();
 
@@ -105,6 +106,7 @@ export default function SignInSide() {
               >
                 Sign In
               </Button>
+              <BasicModal/>
               <Grid container>
                 <Grid item xs>
                   <Link href="#" variant="body2">

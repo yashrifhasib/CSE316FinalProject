@@ -43,6 +43,16 @@ loginUser = async (req, res) => {
                     }
                 }).send();
             }
+            else {
+                return res
+                .status(400)
+                .json({ errorMessage: "You entered the wrong password!" });
+            }
+        }
+        else {
+            return res
+                .status(400)
+                .json({ errorMessage: "You entered the wrong email!" });
         }
 
     }

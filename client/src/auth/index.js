@@ -16,7 +16,8 @@ export const AuthActionType = {
 function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
-        loggedIn: false
+        loggedIn: false,
+        error: null
     });
     const history = useHistory();
 
@@ -49,6 +50,13 @@ function AuthContextProvider(props) {
                 return setAuth({
                     user: null,
                     loggedIn: false
+                })
+            }
+            case AuthActionType.ERROR: {
+                return setAuth({
+                    user:null,
+                    loggedIn:false,
+                    error: payload.errorMessage
                 })
             }
             default:
@@ -90,18 +98,38 @@ function AuthContextProvider(props) {
     }
 
     auth.loginUser = async function(userData, store) {
-        const response = await api.loginUser(userData);
+        try {
+            const response = await api.loginUser(userData);
 
-        if (response.status === 200) {
+            if (response.status === 200) {
+                authReducer({
+                    type: AuthActionType.LOGIN_USER,
+                    payload: {
+                        user: response.data.user
+                    }
+                });
+                history.push("/");
+                store.loadIdNamePairs();
+            }
+        }
+        catch(err) {
+            console.log(err.response.data.errorMessage);
             authReducer({
-                type: AuthActionType.LOGIN_USER,
+                type: AuthActionType.ERROR,
                 payload: {
-                    user: response.data.user
+                    errorMessage: err.response.data.errorMessage
                 }
             });
-            history.push("/");
-            store.loadIdNamePairs();
         }
+    }
+
+    auth.clearError = async function() {
+        authReducer({
+            type: AuthActionType.ERROR,
+            payload: {
+                errorMessage: null
+            }
+        });
     }
 
     auth.logoutUser = async function(userData, store) {
