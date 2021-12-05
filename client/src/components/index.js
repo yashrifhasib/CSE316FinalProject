@@ -11,6 +11,7 @@ import Top5Item from './Top5Item'
 import WorkspaceScreen from './WorkspaceScreen'
 import BasicModal from './BasicModal'
 import DeleteModal from './DeleteModal'
+import SearchToolBar from './SearchToolBar'
 /*
     This serves as a module so that we can import
     all the other components as we wish.
@@ -19,7 +20,8 @@ import DeleteModal from './DeleteModal'
 */
 export { 
     AppBanner, 
-    EditToolbar, 
+    EditToolbar,
+    SearchToolBar,
     HomeScreen,
     HomeWrapper,
     ListCard, 

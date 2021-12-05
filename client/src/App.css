@@ -69,6 +69,10 @@ body {
   vertical-align: center;
 }
 
+#search-toolbar {
+  float: left;
+}
+
 #edit-toolbar {
   background-color: transparent;
   float: right;
