@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
+import { AuthContextProvider } from '../auth'
 import Button from '@mui/material/Button';
 import HomeIcon from '@mui/icons-material/Home';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
@@ -14,18 +15,19 @@ import FunctionsIcon from '@mui/icons-material/Functions';
 */
 function SearchToolBar() {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContextProvider);
 
     function handleHome() {
-        
+        auth.searchType = "home";
     }
     function handleCommunity() {
-        
+        auth.searchType = "community";
     }
     function handleUser() {
-        
+        auth.searchType = "user";
     }
-    function handleSummation() {
-
+    function handleSigma() {
+        auth.searchType = "sigma";
     }
 
     return (
@@ -51,7 +53,7 @@ function SearchToolBar() {
             </Button>
             <Button 
                 id='summation-button'
-                onClick={handleSummation}
+                onClick={handleSigma}
                 variant="contained">
                     <FunctionsIcon />
             </Button>

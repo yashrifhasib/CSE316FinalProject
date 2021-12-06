@@ -17,7 +17,8 @@ function AuthContextProvider(props) {
     const [auth, setAuth] = useState({
         user: null,
         loggedIn: false,
-        error: null
+        error: null,
+        searchType: null
     });
     const history = useHistory();
 
@@ -105,7 +106,6 @@ function AuthContextProvider(props) {
                 }
             });
         }
-        
     }
 
     auth.loginUser = async function(userData, store) {
@@ -119,6 +119,7 @@ function AuthContextProvider(props) {
                         user: response.data.user
                     }
                 });
+                auth.searchType = "home";
                 history.push("/");
                 store.loadIdNamePairs();
             }

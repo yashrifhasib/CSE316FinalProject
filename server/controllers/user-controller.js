@@ -17,14 +17,14 @@ getLoggedIn = async (req, res) => {
 
 loginUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
+        const { username, password } = req.body;
+        if (!username || !password) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
 
-        const existingUser = await User.findOne({ email: email });
+        const existingUser = await User.findOne({ username: username });
         if (existingUser) {
             const passwordMatch = await bcrypt.compare(password, existingUser.passwordHash);
             if (passwordMatch) {
@@ -39,6 +39,7 @@ loginUser = async (req, res) => {
                     user: {
                         firstName: existingUser.firstName,
                         lastName: existingUser.lastName,
+                        username: existingUser.username,
                         email: existingUser.email
                     }
                 }).send();
@@ -52,7 +53,7 @@ loginUser = async (req, res) => {
         else {
             return res
                 .status(400)
-                .json({ errorMessage: "You entered the wrong email!" });
+                .json({ errorMessage: "You entered the wrong username!" });
         }
 
     }
@@ -66,15 +67,15 @@ loginUser = async (req, res) => {
 
 logoutUser = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
+        const { username, password } = req.body;
+        if (!username || !password) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
         }
 
-        const existingUser = await User.logoutUser({ email: email });
-        existingUser = await User.findOne({ email: email });
+        const existingUser = await User.logoutUser({ username: username });
+        existingUser = await User.findOne({ username: username });
         if (existingUser) {
             const passwordMatch = await bcrypt.compare(password, existingUser.passwordHash);
             if (passwordMatch) {
@@ -89,6 +90,7 @@ logoutUser = async (req, res) => {
                     user: {
                         firstName: existingUser.firstName,
                         lastName: existingUser.lastName,
+                        username: existingUser.username,
                         email: existingUser.email
                     }
                 }).send();
@@ -105,8 +107,8 @@ logoutUser = async (req, res) => {
 
 registerUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, passwordVerify } = req.body;
-        if (!firstName || !lastName || !email || !password || !passwordVerify) {
+        const { firstName, lastName, username, email, password, passwordVerify } = req.body;
+        if (!firstName || !lastName || !username || !email || !password || !passwordVerify) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
@@ -132,6 +134,15 @@ registerUser = async (req, res) => {
                 .json({
                     success: false,
                     errorMessage: "An account with this email address already exists."
+                })
+        }
+        const existingUser = await User.findOne({ username: username });
+        if (existingUser) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    errorMessage: "An account with this username already exists."
                 })
         }
 
