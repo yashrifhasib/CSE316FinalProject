@@ -29,14 +29,14 @@ function WorkspaceScreen() {
             </List>;
     }
     return (
-        <div id="top5-workspace">
+        <div id="top5-workspace" style="background-color:blue;">
             <div id="workspace-edit">
                 <div id="edit-numbering">
-                    <div className="item-number"><Typography variant="h3">1.</Typography></div>
+                    <div className="item-number" ><Typography variant="h3">1.</Typography></div>
                     <div className="item-number"><Typography variant="h3">2.</Typography></div>
-                    <div className="item-number"><Typography variant="h3">3.</Typography></div>
-                    <div className="item-number"><Typography variant="h3">4.</Typography></div>
-                    <div className="item-number"><Typography variant="h3">5.</Typography></div>
+                    <div className="item-number" ><Typography variant="h3">3.</Typography></div>
+                    <div className="item-number" ><Typography variant="h3">4.</Typography></div>
+                    <div className="item-number" ><Typography variant="h3">5.</Typography></div>
                 </div>
                 {editItems}
             </div>

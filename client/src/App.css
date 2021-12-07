@@ -69,8 +69,8 @@ body {
   vertical-align: center;
 }
 
-#search-toolbar {
-  float: left;
+#searchBar {
+  background-color: lightblue;
 }
 
 #edit-toolbar {

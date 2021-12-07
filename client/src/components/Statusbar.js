@@ -14,9 +14,9 @@ function Statusbar() {
     const { store } = useContext(GlobalStoreContext);  
     
     
-    useEffect(() => {
-        store.loadIdNamePairs();
-    }, []);
+    //useEffect(() => {
+    //    store.loadIdNamePairs();
+    //}, []);
 
     function handleCreateNewList() {
         store.createNewList();
@@ -25,36 +25,20 @@ function Statusbar() {
     let text ="";
     if (store.currentList)
         text = store.currentList.name;
-    if (auth.loggedIn != null) {
+    if (auth.loggedIn && auth.searchType != null) {
         return (
             <div id="top5-statusbar">
-                <Typography variant="h3">{auth.loggedIn}</Typography>
+                <Typography variant="h3">{auth.searchType}</Typography>
             </div>    
         );
     }
     else {
-        if (auth.loggedIn) {
+        
             return (
                 <div id="top5-statusbar">
-                <Fab 
-                    color="primary" 
-                    aria-label="add"
-                    id="add-list-button"
-                    onClick={handleCreateNewList}
-                >
-                    <AddIcon />
-                </Fab>
-                <Typography variant="h3">Your Lists</Typography>
-            </div>
-            )
-        }
-        else {
-            return (
-                <div id="top5-statusbar">
-
                 </div>
             )
-        }
+        
         
     }
     

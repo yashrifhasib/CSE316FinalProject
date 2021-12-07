@@ -136,6 +136,7 @@ import AuthContext, { AuthContextProvider } from '../auth';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
+import Copyright from './Copyright';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -147,19 +148,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Top 5 Lister
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function SignInSide() {
@@ -170,17 +158,13 @@ export default function SignInSide() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      email: formData.get('username'),
-      password: formData.get('password'),
-    });
     auth.loginUser({
       username: formData.get('username'),
       password: formData.get('password')
     }, store);
 
     console.log({
-      email: formData.get('username'),
+      username: formData.get('username'),
       password: formData.get('password')
     });
   };

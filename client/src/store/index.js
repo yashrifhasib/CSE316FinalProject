@@ -208,7 +208,13 @@ function GlobalStoreContextProvider(props) {
         let payload = {
             name: newListName,
             items: ["?", "?", "?", "?", "?"],
-            ownerEmail: auth.user.email
+            ownerUsername: auth.user.username,
+            likes: 0,
+            dislikes: 0,
+            views: 0,
+            comments: [],
+            publishedDate: null
+
         };
         const response = await api.createTop5List(payload);
         if (response.data.success) {
@@ -267,6 +273,37 @@ function GlobalStoreContextProvider(props) {
         }
     }
 
+    store.likeList = async function(id) {
+        console.log("liked again");
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let newT5List = top5List
+            newT5List.likes = top5List.likes + 1
+            response = await api.updateTop5ListById(top5List._id, newT5List);
+        }
+    }
+
+    store.increaseView = async function(id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let newT5List = top5List
+            newT5List.likes = top5List.views + 1
+            response = await api.updateTop5ListById(top5List._id, newT5List);
+        }
+    }
+
+    store.dislikeList = async function(id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            let newT5List = top5List;
+            newT5List.likes = top5List.likes + 1;
+            response = await api.updateTop5ListById(top5List._id, newT5List);
+        }
+    }
+
     store.deleteMarkedList = function () {
         store.deleteList(store.listMarkedForDeletion);
     }
@@ -296,6 +333,15 @@ function GlobalStoreContextProvider(props) {
                 history.push("/top5list/" + top5List._id);
             }
         }
+    }
+
+    store.getListById = async function (id) {
+        let response = await api.getTop5ListById(id);
+        if (response.data.success) {
+            let top5List = response.data.top5List;
+            return top5List;
+        }
+        return null;
     }
 
     store.addMoveItemTransaction = function (start, end) {

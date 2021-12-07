@@ -18,6 +18,7 @@ getLoggedIn = async (req, res) => {
 loginUser = async (req, res) => {
     try {
         const { username, password } = req.body;
+        //console.log(req.body.username);
         if (!username || !password) {
             return res
                 .status(400)
@@ -25,6 +26,7 @@ loginUser = async (req, res) => {
         }
 
         const existingUser = await User.findOne({ username: username });
+        console.log(existingUser);
         if (existingUser) {
             const passwordMatch = await bcrypt.compare(password, existingUser.passwordHash);
             if (passwordMatch) {
@@ -136,8 +138,8 @@ registerUser = async (req, res) => {
                     errorMessage: "An account with this email address already exists."
                 })
         }
-        const existingUser = await User.findOne({ username: username });
-        if (existingUser) {
+        const existingUser2 = await User.findOne({ username: username });
+        if (existingUser2) {
             return res
                 .status(400)
                 .json({
@@ -154,7 +156,7 @@ registerUser = async (req, res) => {
         
 
         const newUser = new User({
-            firstName, lastName, email, passwordHash
+            firstName, lastName, email, passwordHash, username
         });
         const savedUser = await newUser.save();
 
@@ -170,7 +172,7 @@ registerUser = async (req, res) => {
             user: {
                 firstName: savedUser.firstName,
                 lastName: savedUser.lastName,
-                email: savedUser.email
+                username: savedUser.username,
             }
         }).send();
     } catch (err) {

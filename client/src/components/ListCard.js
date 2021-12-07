@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
@@ -12,6 +13,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 
+
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -19,12 +21,35 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
     
     @author McKilla Gorilla
 */
-function ListCard(props) {
+function  ListCard(props) {
     const { store } = useContext(GlobalStoreContext);
+    const { auth } = useContext(AuthContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const { idNamePair } = props;
-
+    let listLoadState = false;
+    let currentList = store.getListById(idNamePair._id);
+    let list= null;
+    let likes = 0;
+    let publishedDate = null;
+    let views = 0;
+    let dislikes = 0;
+    let comments = [];
+    currentList = Promise.resolve(currentList).then(function(value) {
+        list = value;
+        currentList = value;
+        likes = value.likes;
+        dislikes = value.dislikes;
+        views = value.views
+        comments = value.comments;
+        publishedDate = value.publishedDate;
+    });
+    let key = idNamePair._id;
+    let a = key + "a";
+    let b = key + "b";
+    let c = key + "c";
+    console.log(a);
+    console.log(key)
     function handleLoadList(event, id) {
         if (!event.target.disabled) {
             // CHANGE THE CURRENT LIST
@@ -57,40 +82,160 @@ function ListCard(props) {
             toggleEdit();
         }
     }
+
+    function handleLike(event) {
+        //event.stopPropagation();
+        likes++;
+        document.getElementById(a).innerHTML = likes;
+        store.likeList(key);
+
+    }
+
+    function handleDislike(event) {
+        //event.stopPropagation();
+        dislikes++;
+        document.getElementById(b).innerHTML = dislikes;
+        store.dislikeList(key);
+
+    }
+
+    function handleView() {
+        store.increaseView(key);
+    }
+
+    function expandList(event) {
+        //event.stopPropagation();
+        listLoadState = !listLoadState;
+        views++;
+        document.getElementById(c).innerHTML = "Views: " + views;
+        handleView();
+    }
     
     function handleUpdateText(event) {
         setText(event.target.value);
     }
 
-    let cardElement =
+    let cardElement;
+    
+    if (listLoadState) {
+        cardElement =
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{ marginTop: '15px', display: 'flex', p: 1 }}
             button
-            onClick={(event) => {
-                handleLoadList(event, idNamePair._id)
-            }
-            }
+            
             style={{
                 fontSize: '48pt',
                 width: '100%'
             }}
+
+
         >
-                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+
+                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}
+                <div id={c} style={{fontSize: '20pt'}}>Views: {views}</div>
+                <div style={{fontSize: '20pt'}}>Published Date: {publishedDate}</div>
+                </Box>
+                
+                <Box>
+                    <IconButton>
+                        <ThumbUpIcon onClick={handleLike} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                    <div id={a}></div>
+                </Box>
+
+                &nbsp;
+                &nbsp;
+                <Box>
+                    <IconButton>
+                        <ThumbDownIcon onClick={handleDislike} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                    <div id={b}></div>
+                </Box>
+
                 <Box sx={{ p: 1 }}>
                     <IconButton onClick={handleToggleEdit} aria-label='edit'>
                         <EditIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
                 <Box sx={{ p: 1 }}>
-                    <IconButton onClick={(event) => {
+                    <IconButton  onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
+                        
                         <DeleteIcon style={{fontSize:'48pt'}} />
                     </IconButton>
                 </Box>
+                <Box>
+                    <IconButton>
+                        <KeyboardArrowDownIcon onClick={expandList} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                </Box>
+                
+
         </ListItem>
+    }
+
+    else {
+        cardElement =
+        <ListItem
+            id={idNamePair._id}
+            key={idNamePair._id}
+            sx={{ marginTop: '15px', display: 'flex', p: 1 }}
+            button
+            
+            style={{
+                fontSize: '48pt',
+                width: '100%'
+            }}
+
+
+        >
+
+                <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}
+                <div id={c} style={{fontSize: '20pt'}}>Views: {views}</div>
+                <div style={{fontSize: '20pt'}}>Published Date: {publishedDate}</div>
+                </Box>
+                
+                <Box>
+                    <IconButton>
+                        <ThumbUpIcon onClick={handleLike} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                    <div id={a}></div>
+                </Box>
+
+                &nbsp;
+                &nbsp;
+                <Box>
+                    <IconButton>
+                        <ThumbDownIcon onClick={handleDislike} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                    <div id={b}></div>
+                </Box>
+
+                <Box sx={{ p: 1 }}>
+                    <IconButton onClick={handleToggleEdit} aria-label='edit'>
+                        <EditIcon style={{fontSize:'48pt'}} />
+                    </IconButton>
+                </Box>
+                <Box sx={{ p: 1 }}>
+                    <IconButton  onClick={(event) => {
+                        handleDeleteList(event, idNamePair._id)
+                    }} aria-label='delete'>
+                        
+                        <DeleteIcon style={{fontSize:'48pt'}} />
+                    </IconButton>
+                </Box>
+                <Box>
+                    <IconButton>
+                        <KeyboardArrowDownIcon onClick={expandList} style={{fontSize: '48pt'}}/>
+                    </IconButton>
+                </Box>
+                
+
+        </ListItem>    }
+    
 
     if (editActive) {
         cardElement =

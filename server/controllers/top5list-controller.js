@@ -53,9 +53,14 @@ updateTop5List = async (req, res) => {
             })
         }
         
-        if (userData.email === top5List.ownerEmail) {
+        if (userData.username === top5List.ownerUsername) {
             top5List.name = body.name;
             top5List.items = body.items;
+            top5List.likes = body.likes;
+            top5List.dislikes = body.dislikes;
+            top5List.comments = body.comments;
+            top5List.publishedDate = body.publishedDate;
+            top5List.views = body.views;
             top5List
             .save()
             .then(() => {
@@ -88,7 +93,7 @@ deleteTop5List = async (req, res) => {
                 message: 'Top 5 List not found!',
             })
         }
-        if (top5List.ownerEmail === userData.email) {
+        if (top5List.ownerUsername === userData.username) {
             Top5List.findOneAndDelete({ _id: req.params.id }, () => {
                 return res.status(200).json({ success: true, data: top5List })
             }).catch(err => console.log(err));
@@ -107,7 +112,7 @@ getTop5ListById = async (req, res) => {
 }
 getTop5Lists = async (req, res) => {
     let userData = await User.findById({_id: req.userId});
-    await Top5List.find({ownerEmail: userData.email}, (err, top5Lists) => {
+    await Top5List.find({ownerUsername: userData.username}, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
@@ -122,7 +127,7 @@ getTop5Lists = async (req, res) => {
 getTop5ListPairs = async (req, res) => {
 
     let userData = await User.findById({_id: req.userId});
-    await Top5List.find({ ownerEmail: userData.email }, (err, top5Lists) => {
+    await Top5List.find({ ownerUsername: userData.username }, (err, top5Lists) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }

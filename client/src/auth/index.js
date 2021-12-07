@@ -38,19 +38,22 @@ function AuthContextProvider(props) {
             case AuthActionType.LOGIN_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    searchType: "Home"
                 });
             }
             case AuthActionType.REGISTER_USER: {
                 return setAuth({
                     user: payload.user,
-                    loggedIn: true
+                    loggedIn: true,
+                    searchType: "Home"
                 })
             }
             case AuthActionType.LOGOUT_USER: {
                 return setAuth({
                     user: null,
-                    loggedIn: false
+                    loggedIn: false,
+                    searchType: null
                 })
             }
             case AuthActionType.ERROR: {
@@ -110,6 +113,7 @@ function AuthContextProvider(props) {
 
     auth.loginUser = async function(userData, store) {
         try {
+            console.log("userData.username");
             const response = await api.loginUser(userData);
 
             if (response.status === 200) {
@@ -119,7 +123,6 @@ function AuthContextProvider(props) {
                         user: response.data.user
                     }
                 });
-                auth.searchType = "home";
                 history.push("/");
                 store.loadIdNamePairs();
             }
